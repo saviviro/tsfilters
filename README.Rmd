@@ -1,0 +1,40 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# tsfilters
+
+The goal of tsfilters is to provide various time series filters.
+
+## Installation
+
+You can install the released version of tsfilters from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("saviviro/tsfilters")
+```
+## Example
+
+Separate trend and cyclical component of univariate time series using the filter proposed by using the method proposed by Hamilton (2018, doi:10.1162/rest_a_00706).
+```{r example}
+library(tsfilters)
+data(INDPRO, package="tsfilters")
+IP_filtered <- hfilter(INDPRO, h=24, p=12)
+IP_filtered
+plot(IP_filtered)
+```
+
+What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+
