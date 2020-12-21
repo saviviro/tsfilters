@@ -2,4 +2,6 @@
 
 S3method(plot,hfilter)
 S3method(print,hfilter)
+export(get_new_start)
 export(hfilter)
+export(logdiff)

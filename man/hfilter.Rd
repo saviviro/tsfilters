@@ -44,6 +44,8 @@ Returns a class \code{'hfilter'} object containing the following:
 \item{\code{$h}:}{the horizon used}
 \item{\code{$p}:}{the number of lags (including the zero lag) used}
 }
+If the provided series \code{y} is of class \code{ts}, the dates of the detrended
+series will be set accordingly.
 }
 \description{
 \code{hfilter} separates trend and cycle components of univariate time series
@@ -51,7 +53,7 @@ using the method proposed by Hamilton (2018, doi:10.1162/rest_a_00706) based on 
 projections.
 }
 \details{
-The first \code{p + h - 1} values of the series are required to obtain the cycle component
+The first \code{p + h - 1} observations of the series are required to obtain the cycle component
 at time \code{p + h} (= first time point of the series). For more details, see the paper
 by Hamilton (2018).
 }

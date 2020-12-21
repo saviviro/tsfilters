@@ -15,7 +15,7 @@
 #'  recommends \code{p} to be a multiplicative of one year for seasonal data, i.e., for instance
 #'  \code{p=4} for quarterly data and \code{p=12} monthly data.
 #' @details
-#'  The first \code{p + h - 1} values of the series are required to obtain the cycle component
+#'  The first \code{p + h - 1} observations of the series are required to obtain the cycle component
 #'  at time \code{p + h} (= first time point of the series). For more details, see the paper
 #'  by Hamilton (2018).
 #' @return Returns a class \code{'hfilter'} object containing the following:
@@ -28,6 +28,8 @@
 #'    \item{\code{$h}:}{the horizon used}
 #'    \item{\code{$p}:}{the number of lags (including the zero lag) used}
 #'  }
+#'  If the provided series \code{y} is of class \code{ts}, the dates of the detrended
+#'  series will be set accordingly.
 #' @references
 #'  \itemize{
 #'    \item J.D. Hamilton. 2018. WHY YOU SHOULD NEVER USE THE HODRICK-PRESCOTT FILTER.
@@ -53,12 +55,7 @@ hfilter <- function(y, h=24, p=12) {
 
   # Calculate the new start time for the trend and cyclical components
   steps_forward <- h + p - 1
-  majors_forward <- steps_forward %/% y_freq
-  minors_forward <- steps_forward %% y_freq
-  new_start <- y_start + c(majors_forward, minors_forward)
-  if(new_start[2] == y_freq + 1) {
-    new_start <- c(new_start[1] + 1, 1)
-  }
+  new_start <- get_new_start(y_start=y_start, y_freq=y_freq, steps_forward=steps_forward)
 
   # Each row X is x_t', x_t=(y_{t},...,y_{t-p+1}, 1), first p values needed for the regressors,
   # the last t+h is for the last observation
@@ -85,5 +82,41 @@ hfilter <- function(y, h=24, p=12) {
 }
 
 
+#' @title Take logarithm and then first differences of a time series.
+#'
+#' @description \code{logdiff} logarithmizes and then takes first differences of a
+#'  time series.
+#'
+#' @inheritParams hfilter
+#' @details
+#'  The first observation of the series are required as the initial value for the
+#'  the first differences. The second observation will thereby be the first observation
+#'  of the detrended series.
+#' @return Returns a class \code{'ts'} object containing the log-differenced series.
+#'  If the provided series \code{y} is of class \code{ts}, the dates of the detrended
+#'  series will be set accordingly.
+#' @examples
+#'  data(INDPRO, package="tsfilters")
+#'  IP_logdiff <- logdiff(INDPRO)
+#'  start(INDPRO)
+#'  start(IP_logdiff)
+#'  plot(IP_logdiff)
+#' @export
 
+logdiff <- function(y) {
+  if(!is.ts(y)) {
+    y <- ts(as.vector(y), start=1, frequency=1)
+  }
+
+  # Store properties of the original series
+  y_start <- start(y)
+  y_freq <- frequency(y)
+  y <- as.vector(y)
+
+  # Start time of the detrended series:
+  new_start <- get_new_start(y_start=y_start, y_freq=y_freq, steps_forward=1)
+
+  # Calculate and return the log-differenced series:
+  ts(diff(log(y), lag=1, differences=1), start=new_start, frequency=y_freq)
+}
 
