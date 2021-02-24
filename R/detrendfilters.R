@@ -37,7 +37,7 @@
 #'  }
 #' @examples
 #'  data(INDPRO, package="tsfilters")
-#'  IP_filtered <- hfilter(INDPRO, h=24, p=12)
+#'  IP_filtered <- hfilter(log(INDPRO), h=24, p=12)
 #'  IP_filtered
 #'  plot(IP_filtered)
 #' @export

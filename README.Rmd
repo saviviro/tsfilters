@@ -27,14 +27,15 @@ devtools::install_github("saviviro/tsfilters")
 ```
 ## Example
 
-Separate trend and cyclical component of univariate time series using the filter proposed by using the method proposed by Hamilton (2018, doi:10.1162/rest_a_00706).
+Separate trend and cyclical component of univariate time series using the method proposed by Hamilton (2018, doi:10.1162/rest_a_00706).
 ```{r example}
 library(tsfilters)
 data(INDPRO, package="tsfilters")
-IP_filtered <- hfilter(INDPRO, h=24, p=12)
+IP_filtered <- hfilter(log(INDPRO), h=24, p=12)
 IP_filtered
 plot(IP_filtered)
+
+# The first difference of logarithmized series:
+IP_logdiff <- logdiff(INDPRO)
+plot(IP_logdiff)
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
