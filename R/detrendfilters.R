@@ -22,7 +22,7 @@
 #'  \describe{
 #'    \item{\code{$cycle}:}{the cyclical component of the series}
 #'    \item{\code{$trend}:}{the trend component of the series}
-#'    \item{\code{$total}:}{trend + cyclical (shorter than the original seris)}
+#'    \item{\code{$total}:}{trend + cyclical (shorter than the original series)}
 #'    \item{\code{$beta}:}{the OLS coefficients}
 #'    \item{\code{$y}:}{the original series}
 #'    \item{\code{$h}:}{the horizon used}
@@ -118,5 +118,89 @@ logdiff <- function(y) {
 
   # Calculate and return the log-differenced series:
   ts(diff(log(y), lag=1, differences=1), start=new_start, frequency=y_freq)
+}
+
+
+#' @title Hodrick-Prescott filter
+#'
+#' @description \code{hpfilter} Hodrick-Prescott filter for univariate time series
+#'
+#' @inheritParams hfilter
+#' @param lambda real number giving the smoothing parameter lambda
+#' @param type should "one-sided" or "two-sided" HP filter be used? One sided runs the two-sided filter
+#'  consecutively for each t (starting from the third observation) and takes the last value as the trend/cycle
+#'  component at the time t.
+#' @details
+#'  Decompose univariate time series to cyclical component and trend component with Hodrick-Prescott filter.
+#'  This function directly uses the function \code{hp_filter} from the package \code{lpirfs}. Notice that
+#'  the first two observations are lost in the one-sided filter.
+#' @return Returns a class \code{'hpfilter'} object containing the following:
+#'  \describe{
+  #'    \item{\code{$cycle}:}{the cyclical component of the series}
+  #'    \item{\code{$trend}:}{the trend component of the series}
+  #'    \item{\code{$total}:}{trend + cyclical (shorter than the original series)}
+  #'    \item{\code{$lambda}:}{the smoothing parameter lambda}
+  #'    \item{\code{$type}:}{one-sided or two-sided}
+  #'    \item{\code{$y}:}{the original series}
+  #'  }
+  #'  If the provided series \code{y} is of class \code{ts}, the dates of the decomposed
+  #'  series will be set accordingly.
+#' @examples
+#'  # Log of quarterly industrial production index
+#'  data(INDPRO, package="tsfilters")
+#'  IPQ <- log(colMeans(matrix(INDPRO, nrow=3)))
+#'  IPQ <- ts(IPQ, start=start(INDPRO), frequency=4)
+#'
+#'  # One-sided
+#'  IPQ_hp <- hpfilter(IPQ, lambda=1600, type="one-sided")
+#'  plot(IPQ_hp)
+#'  IPQ_hp
+#'
+#'  # Two-sided
+#'  IPQ_hp2 <- hpfilter(IPQ, lambda=1600, type="two-sided")
+#'  plot(IPQ_hp2)
+#'  IPQ_hp2
+#'
+#' @export
+
+hpfilter <- function(y, lambda=1600, type=c("one-sided", "two-sided")) {
+  type <- match.arg(type)
+  if(!is.ts(y)) {
+    y <- ts(as.vector(y), start=1, frequency=1)
+  }
+
+
+  # Store properties of the original series
+  y_start <- start(y)
+  y_freq <- frequency(y)
+  y <- as.vector(y)
+
+  # Calculate and return the log-differenced series:
+  if(type == "two-sided") {
+    tmp <- lpirfs::hp_filter(x=as.matrix(y), lambda=lambda)
+    cycle <- tmp[[1]]
+    trend <- tmp[[2]]
+    new_start <- y_start
+  } else { # One-sided
+    # Run the HP-filter for each t consecutively and take the last observation
+    cycle <- trend <- numeric(length(y) - 2)
+    for(i1 in 3:length(y)) {
+      if(i1 %% 100 == 0 || i1 == length(y)) cat(paste0(i1, "/", length(y)), "\r")
+      tmp <- lpirfs::hp_filter(x=as.matrix(y[1:i1]), lambda=lambda)
+      cycle[i1 - 2] <- tmp[[1]][i1]
+      trend[i1 - 2] <- tmp[[2]][i1]
+    }
+    new_start <- get_new_start(y_start=y_start, y_freq=y_freq, steps_forward=2)
+  }
+
+  make_ts <- function(a) ts(a, start=new_start, frequency=y_freq)
+
+  structure(list(cycle=make_ts(cycle),
+                 trend=make_ts(trend),
+                 total=make_ts(cycle + trend),
+                 lambda=lambda, # OLS coefficients for the regressors (y_{t},...,y_{t-p+1}, 1)
+                 type=type,
+                 y=y),
+            class="hpfilter")
 }
 

@@ -9,3 +9,11 @@ plot.hfilter <- function(x, ...) {
 }
 
 
+#' @describeIn hpfilter plot method
+#' @param ... arguments passed to \code{plot.ts}
+#' @export
+
+plot.hpfilter <- function(x, ...) {
+  plot(with(x, cbind(total, cycle, trend)),
+       main="Separated cycle and trend", ...)
+}

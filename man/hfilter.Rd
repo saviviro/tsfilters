@@ -38,7 +38,7 @@ Returns a class \code{'hfilter'} object containing the following:
 \describe{
 \item{\code{$cycle}:}{the cyclical component of the series}
 \item{\code{$trend}:}{the trend component of the series}
-\item{\code{$total}:}{trend + cyclical (shorter than the original seris)}
+\item{\code{$total}:}{trend + cyclical (shorter than the original series)}
 \item{\code{$beta}:}{the OLS coefficients}
 \item{\code{$y}:}{the original series}
 \item{\code{$h}:}{the horizon used}
@@ -66,7 +66,7 @@ by Hamilton (2018).
 
 \examples{
  data(INDPRO, package="tsfilters")
- IP_filtered <- hfilter(INDPRO, h=24, p=12)
+ IP_filtered <- hfilter(log(INDPRO), h=24, p=12)
  IP_filtered
  plot(IP_filtered)
 }

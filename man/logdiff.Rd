@@ -27,5 +27,8 @@ of the detrended series.
 }
 \examples{
  data(INDPRO, package="tsfilters")
-
+ IP_logdiff <- logdiff(INDPRO)
+ start(INDPRO)
+ start(IP_logdiff)
+ plot(IP_logdiff)
 }
