@@ -31,11 +31,29 @@ Separate trend and cyclical component of univariate time series using the method
 ```{r example}
 library(tsfilters)
 data(INDPRO, package="tsfilters")
+
+## Hamilton (2018) filter:
 IP_filtered <- hfilter(log(INDPRO), h=24, p=12)
 IP_filtered
 plot(IP_filtered)
 
-# The first difference of logarithmized series:
+## The first difference of logarithmized series:
 IP_logdiff <- logdiff(INDPRO)
 plot(IP_logdiff)
+
+## HP filter:
+
+# Log of quarterly industrial production index
+IPQ <- log(colMeans(matrix(INDPRO, nrow=3)))
+IPQ <- ts(IPQ, start=start(INDPRO), frequency=4)
+
+# One-sided
+IPQ_hp <- hpfilter(IPQ, lambda=1600, type="one-sided")
+plot(IPQ_hp)
+IPQ_hp
+
+# Two-sided
+IPQ_hp2 <- hpfilter(IPQ, lambda=1600, type="two-sided")
+plot(IPQ_hp2)
+IPQ_hp2
 ```

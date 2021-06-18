@@ -59,11 +59,19 @@ the first two observations are lost in the one-sided filter.
 }}
 
 \examples{
+ # Log of quarterly industrial production index
  data(INDPRO, package="tsfilters")
- IPQ <- log(colMeans(matrix(INDPRO, nrow=3))) # Log of quarterly industrial production index
+ IPQ <- log(colMeans(matrix(INDPRO, nrow=3)))
  IPQ <- ts(IPQ, start=start(INDPRO), frequency=4)
- start(IPQ)
+
+ # One-sided
  IPQ_hp <- hpfilter(IPQ, lambda=1600, type="one-sided")
- plot(IPQ_hp$trend)
- plot(IP_logdiff)
+ plot(IPQ_hp)
+ IPQ_hp
+
+ # Two-sided
+ IPQ_hp2 <- hpfilter(IPQ, lambda=1600, type="two-sided")
+ plot(IPQ_hp2)
+ IPQ_hp2
+
 }
