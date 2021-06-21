@@ -1,3 +1,5 @@
+#' @import stats
+#'
 #' @title Filter proposed by Hamilton (2018, doi:10.1162/rest_a_00706) to separate trend
 #'  and cycle components of a series.
 #'
@@ -81,7 +83,8 @@ hfilter <- function(y, h=24, p=12) {
             class="hfilter")
 }
 
-
+#' @import stats
+#'
 #' @title Take logarithm and then first differences of a time series.
 #'
 #' @description \code{logdiff} logarithmizes and then takes first differences of a
@@ -121,6 +124,8 @@ logdiff <- function(y) {
 }
 
 
+#'  @import stats
+#'
 #' @title Hodrick-Prescott filter
 #'
 #' @description \code{hpfilter} Hodrick-Prescott filter for univariate time series

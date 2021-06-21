@@ -47,6 +47,8 @@ series will be set accordingly.
 \code{hpfilter} Hodrick-Prescott filter for univariate time series
 }
 \details{
+@import stats
+
 Decompose univariate time series to cyclical component and trend component with Hodrick-Prescott filter.
 This function directly uses the function \code{hp_filter} from the package \code{lpirfs}. Notice that
 the first two observations are lost in the one-sided filter.

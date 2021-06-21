@@ -3,9 +3,10 @@ Title: Various Time Series Filters
 Version: 0.0.0.9000
 Authors@R: 
     person("Savi", "Virolainen", email = "savi.virolainen@helsinki.fi", role = c("aut", "cre"))
-Description: Various Time Series Filter
+Description: Various Time Series Filters, including log-difference, Hamilton's filter,
+    and Hodrick-Prescott filter. 
 License: GPL-3
-Imports: lpirfs (>= 0.2.0)
+Imports: lpirfs (>= 0.2.0), stats (>= 4.0.2)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
