@@ -1,7 +1,7 @@
 #' @title Get the new starting time of series that is forwarded some number of steps
 #'
 #' @description \code{get_new_start} calculates the new starting time of series
-#'   that is forwarded some number of steps
+#'   that is forwarded some number of steps.
 #'
 #' @param y_start original starting time of the series
 #' @param y_freq frequency of the series
