@@ -21,7 +21,7 @@ time in the second element for a series that is forwarded from \code{y_start}
 }
 \description{
 \code{get_new_start} calculates the new starting time of series
-that is forwarded some number of steps
+that is forwarded some number of steps.
 }
 \examples{
  get_new_start(y_start=c(1999, 12), y_freq=12, steps_forward=1)

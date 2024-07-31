@@ -1,16 +1,16 @@
 Package: tsfilters
 Title: Various Time Series Filters
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     person("Savi", "Virolainen", email = "savi.virolainen@helsinki.fi", role = c("aut", "cre"))
-Description: Various Time Series Filters, including log-difference, Hamilton's filter,
+Description: Various Time Series Filters, including log-difference, Hamilton's linear projection filter,
     and Hodrick-Prescott filter. 
 License: GPL-3
 Imports: lpirfs (>= 0.2.0), stats (>= 4.0.2)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Depends: 
     R (>= 2.10)
 Suggests: 

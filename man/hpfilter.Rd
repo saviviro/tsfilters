@@ -55,11 +55,11 @@ the first two observations are lost in the one-sided filter.
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{plot}: plot method
+\item \code{plot(hpfilter)}: plot method
 
-\item \code{print}: print method
+\item \code{print(hpfilter)}: print method
+
 }}
-
 \examples{
  # Log of quarterly industrial production index
  data(INDPRO, package="tsfilters")

@@ -59,11 +59,11 @@ by Hamilton (2018).
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{plot}: plot method
+\item \code{plot(hfilter)}: plot method
 
-\item \code{print}: print method
+\item \code{print(hfilter)}: print method
+
 }}
-
 \examples{
  data(INDPRO, package="tsfilters")
  IP_filtered <- hfilter(log(INDPRO), h=24, p=12)
