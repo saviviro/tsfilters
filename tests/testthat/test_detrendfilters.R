@@ -42,7 +42,7 @@ test_that("hfilter returns correct values", {
 })
 
 test_that("hpfilter works correctly", {
-  HP_filtered1 <- hpfilter(IP, lambda=1600, type="two-sided")
+  HP_filtered1 <- hpfilter(IP1, lambda=1600, type="two-sided")
   expect_equal(start(HP_filtered1$cycle), c(1951, 8), tol=1e-6)
   expect_equal(end(HP_filtered1$cycle), c(2020, 12), tol=1e-6)
   expect_equal(frequency(HP_filtered1$cycle), 12)
